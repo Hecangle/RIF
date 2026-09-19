@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIF Digital v2.0 - SENIAT</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ffffff;
+            color: #111827;
+            padding: 20px 15px 40px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Marco Principal Exterior (Exacto a la Imagen 2) */
+        .page-frame {
+            width: 100%;
+            max-width: 820px;
+            background-color: #ffffff;
+            border: 1px solid #c8d4e0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 1. Cabecera */
+        .header-section {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px 14px 20px;
+        }
+
+        .logo-seniat {
+            height: 56px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .header-title-container {
+            flex: 1;
+            display: flex;
+            justify-content: center; /* Título centrado en el área restante */
+            padding-left: 20px;
+        }
+
+        .header-title {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15.5px;
+            font-weight: bold;
+            color: #0b2866;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+        }
+
+        /* Líneas divisorias horizontales */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #c8d4e0;
+        }
+
+        /* 2. Cuerpo Central */
+        .body-section {
+            padding: 14px 18px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Fila de 2 Cajas */
+        .boxes-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 12px;
+        }
+
+        .info-card {
+            border: 1px solid #c8d4e0;
+            border-radius: 3px;
+            padding: 12px 16px 14px 16px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-label {
+            font-size: 8.5px;
+            font-weight: bold;
+            color: #6b7a8d;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
+        }
+
+        /* Identificación */
+        .rif-number {
+            font-size: 16.5px;
+            font-weight: bold;
+            color: #0b2866;
+            margin-bottom: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        .taxpayer-fullname {
+            font-size: 12.5px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            line-height: 1.25;
+        }
+
+        .label-domicilio {
+            font-size: 8.5px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .text-domicilio {
+            font-size: 8.5px;
+            color: #374151;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        .note-firmas {
+            font-size: 8px;
+            color: #6b7280;
+            margin-top: 14px;
+        }
+
+        /* Datos de Registro y Vigencia */
+        .dates-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.5px;
+            margin-top: 3px;
+        }
+
+        .dates-table td {
+            padding: 2.5px 0;
+            vertical-align: middle;
+        }
+
+        .dates-table td.col-label {
+            font-weight: bold;
+            color: #374151;
+            width: 50%;
+            text-transform: uppercase;
+            font-size: 8px;
+            letter-spacing: 0.1px;
+        }
+
+        .dates-table td.col-val {
+            font-weight: normal;
+            color: #111827;
+            font-size: 8.5px;
+            text-align: left; /* Alineado a la izquierda en su columna */
+            padding-left: 8px;
+        }
+
+        .unidad-text {
+            font-size: 8px;
+            font-weight: bold;
+            color: #374151;
+            text-transform: uppercase;
+            line-height: 1.35;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        /* Caja Inferior de Verificación Electrónica */
+        .verification-card {
+            border: 1px solid #c8d4e0;
+            border-radius: 3px;
+            padding: 24px 24px 16px 24px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .verification-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .seal-container {
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .seal-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 3px;
+        }
+
+        .seal-code {
+            font-size: 9.5px;
+            font-weight: bold;
+            color: #0b2866;
+            letter-spacing: 0.3px;
+        }
+
+        .seal-title {
+            font-size: 9px;
+            font-weight: bold;
+            color: #0b2866;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .seal-sub {
+            font-size: 7.5px;
+            font-weight: bold;
+            color: #0b2866;
+            text-transform: uppercase;
+            line-height: 1.35;
+            margin-top: 2px;
+        }
+
+        .qr-container {
+            flex: 0.8;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+
+        .qr-image {
+            width: 105px;
+            height: 105px;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .retention-text {
+            font-size: 9.5px;
+            color: #111827;
+            line-height: 1.35;
+            text-align: left;
+        }
+
+        /* 3. Pie de Página */
+        .footer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 22px 10px 20px;
+        }
+
+        .logo-ministerio {
+            height: 40px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .footer-legend {
+            font-size: 8.5px;
+            color: #6b7280;
+            text-align: right;
+        }
+
+        /* Mensaje de no encontrado */
+        .not-found-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #cbd5e1;
+            margin-top: 30px;
+        }
+
+        .not-found-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #991b1b;
+            margin-bottom: 8px;
+        }
+
+        .not-found-desc {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-volver {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        /* Reglas de Impresión y PDF */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .not-found-container {
+                display: none !important;
+            }
+
+            .page-frame {
+                max-width: 100% !important;
+                border: 1px solid #000000 !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                page-break-inside: avoid;
+            }
+
+            .section-divider {
+                background-color: #000000 !important;
+            }
+
+            .info-card,
+            .verification-card {
+                border-color: #000000 !important;
+            }
+        }
+
+        @page {
+            size: letter portrait;
+            margin: 0.8cm;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mensaje si no se encuentra la cédula -->
+    <div class="not-found-container" id="boxNotFound">
+        <div style="font-size: 2.5rem; margin-bottom: 10px;">⚠️</div>
+        <div class="not-found-title">Cédula No Encontrada</div>
+        <div class="not-found-desc" id="lblNotFoundDesc">
+            La cédula ingresada no se encuentra registrada en el sistema.
+        </div>
+        <div>
+            <a href="index.php" class="btn-volver">
+                <span>🔍</span> Volver al Buscador
+            </a>
+        </div>
+    </div>
+
+    <!-- Documento Completo RIF Digital v2.0 (Fiel a la Imagen 2) -->
+    <div class="page-frame" id="comprobanteRif">
+        
+        <!-- 1. Cabecera -->
+        <div class="header-section">
+            <img src="logo.svg" alt="SENIAT" class="logo-seniat" />
+            <div class="header-title-container">
+                <div class="header-title">
+                    REGISTRO ÚNICO DE INFORMACIÓN FISCAL (RIF)
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 2. Cuerpo Central -->
+        <div class="body-section">
+            
+            <!-- Fila de 2 Cajas -->
+            <div class="boxes-row">
+                
+                <!-- Caja 1: Identificación del Contribuyente -->
+                <div class="info-card">
+                    <div class="card-header-label">IDENTIFICACIÓN DEL CONTRIBUYENTE</div>
+                    
+                    <div class="rif-number">
+                        RIF: <span id="txtRifContribuyente">V117068494</span>
+                    </div>
+
+                    <div class="taxpayer-fullname" id="txtNombreContribuyente">
+                        ANDRES HERNANDEZ BARAZARTE
+                    </div>
+
+                    <div class="label-domicilio">DOMICILIO FISCAL:</div>
+                    <div class="text-domicilio" id="txtDomicilioFiscal">
+                        CTRA PRINCIPAL CASA NRO S/N SECTOR ALTO DE SAN ANTONIO BATATAL TRUJILLO ZONA POSTAL 3103
+                    </div>
+
+                    <div class="note-firmas" id="txtNotaFirmas">
+                        (Este contribuyente no posee firmas personales)
+                    </div>
+                </div>
+
+                <!-- Caja 2: Datos de Registro y Vigencia -->
+                <div class="info-card">
+                    <div class="card-header-label">DATOS DE REGISTRO Y VIGENCIA</div>
+                    
+                    <table class="dates-table">
+                        <tr>
+                            <td class="col-label">FECHA DE INSCRIPCIÓN</td>
+                            <td class="col-val" id="txtFechaInscripcion">27/07/2007</td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">ÚLTIMA ACTUALIZACIÓN</td>
+                            <td class="col-val" id="txtFechaActualizacion">19/09/2026</td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">N° COMPROBANTE:</td>
+                            <td class="col-val" id="txtNumComprobante">202305Q0000062230058</td>
+                        </tr>
+                    </table>
+
+                    <div class="unidad-text" id="txtUnidadTributaria">
+                        UNIDAD TRIBUTOS INTERNOS BOCONÓ / SECTOR TRIBUTOS INTERNOS TRUJILLO-VALERA
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Caja 3: Verificación Electrónica, Sello, Firma y QR -->
+            <div class="verification-card">
+                
+                <div class="verification-top">
+                    <!-- Sello y Código de Firma -->
+                    <div class="seal-container">
+                        <div class="seal-box">
+                            <div class="seal-code" id="txtCodigoFirma">
+                                1117068494-IUT
+                            </div>
+                            <div class="seal-title">
+                                FIRMA AUTORIZADA / SISTEMA
+                            </div>
+                            <div class="seal-sub">
+                                DOCUMENTO EMITIDO ELECTRÓNICAMENTE<br>
+                                NO REQUIERE SELLO HÚMEDO
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Código QR -->
+                    <div class="qr-container">
+                        <img id="imgQr" src="https://api.qrserver.com/v1/create-qr-code/?size=115x115&margin=0&data=RIF:V117068494|COMP:202305Q0000062230058" alt="QR Verificación" class="qr-image" />
+                    </div>
+                </div>
+
+                <!-- Leyenda de Retención -->
+                <div class="retention-text" id="txtLeyendaLegal">
+                    La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado.
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 3. Pie de Página -->
+        <div class="footer-section">
+            <img src="logo2.png" alt="Ministerio de Economía y Finanzas" class="logo-ministerio" />
+            <div class="footer-legend">
+                Servicio Nacional Integrado de Administración Aduanera y Tributaria - RIF Digital v2.0
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Función para calcular código de firma según la regla: 1 + números del RIF + -IUT
+        function generarCodigoFirmaIUT(rif) {
+            const soloNumeros = rif.replace(/[^0-9]/g, '');
+            return `1${soloNumeros}-IUT`;
+        }
+
+        // Base de datos de los contribuyentes registrados
+        const CONTRIBUYENTES_DB = {
+            "5633037": {
+                rif: "V056330379",
+                nombre: "HERNANDEZ BARAZARTE JOSE DE LOS SANTOS",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ALTO DE SAN ANTONIO BATATAL BOCONO ESTADO TRUJILLO BATATAL TRUJILLO ZONA POSTAL 3103",
+                comprobante: "202505U0000067943276",
+                fecha_inscripcion: "11/10/2007",
+                fecha_actualizacion: "19/10/2006",
+                unidad: "UNIDAD TRIBUTOS INTERNOS BOCONÓ / SECTOR TRIBUTOS INTERNOS TRUJILLO-VALERA",
+                nota_firmas: "(Este contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado."
+            },
+            "9159300": {
+                rif: "V091593005",
+                nombre: "HERNANDEZ BARAZARTE ROSALIA DEL CARMEN",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ANTIMANO LIBERTADOR, DTTO. CAPITAL ZONA POSTAL 1010",
+                comprobante: "202505U0000067943280",
+                fecha_inscripcion: "04/08/2009",
+                fecha_actualizacion: "19/10/2006",
+                unidad: "SECTOR DE TRIBUTOS INTERNOS LIBERTADOR / REGIÓN CAPITAL",
+                nota_firmas: "(Este contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado."
+            },
+            "5633038": {
+                rif: "V056330387",
+                nombre: "HERNANDEZ BARAZARTE ANTONIA MARIA",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ANTIMANO LIBERTADOR, DTTO. CAPITAL ZONA POSTAL 1010",
+                comprobante: "202505U0000067943290",
+                fecha_inscripcion: "14/07/2010",
+                fecha_actualizacion: "19/10/2006",
+                unidad: "SECTOR DE TRIBUTOS INTERNOS LIBERTADOR / REGIÓN CAPITAL",
+                nota_firmas: "(Este contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado."
+            },
+            "11706849": {
+                rif: "V117068494",
+                nombre: "ANDRES HERNANDEZ BARAZARTE",
+                domicilio: "CTRA PRINCIPAL CASA NRO S/N SECTOR ALTO DE SAN ANTONIO BATATAL TRUJILLO ZONA POSTAL 3103",
+                comprobante: "202305Q0000062230058",
+                fecha_inscripcion: "27/07/2007",
+                fecha_actualizacion: "19/09/2026",
+                unidad: "UNIDAD TRIBUTOS INTERNOS BOCONÓ / SECTOR TRIBUTOS INTERNOS TRUJILLO-VALERA",
+                nota_firmas: "(Este contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado."
+            }
+        };
+
+        function cargarDatos(clave) {
+            const data = CONTRIBUYENTES_DB[clave];
+            if (!data) return false;
+
+            document.getElementById('txtRifContribuyente').innerText = data.rif;
+            document.getElementById('txtNombreContribuyente').innerText = data.nombre;
+            document.getElementById('txtDomicilioFiscal').innerText = data.domicilio;
+            document.getElementById('txtNotaFirmas').innerText = data.nota_firmas;
+            document.getElementById('txtFechaInscripcion').innerText = data.fecha_inscripcion;
+            document.getElementById('txtFechaActualizacion').innerText = data.fecha_actualizacion;
+            document.getElementById('txtNumComprobante').innerText = data.comprobante;
+            document.getElementById('txtUnidadTributaria').innerText = data.unidad;
+            
+            // Regla: 1 + números del RIF + -IUT
+            const codigoIUT = generarCodigoFirmaIUT(data.rif);
+            document.getElementById('txtCodigoFirma').innerText = codigoIUT;
+            
+            document.getElementById('txtLeyendaLegal').innerText = data.retencion;
+
+            // QR dinámico
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=115x115&margin=0&data=RIF:${encodeURIComponent(data.rif)}|COMP:${encodeURIComponent(data.comprobante)}|COD:${encodeURIComponent(codigoIUT)}`;
+            document.getElementById('imgQr').src = qrUrl;
+
+            document.getElementById('comprobanteRif').style.display = 'flex';
+            document.getElementById('boxNotFound').style.display = 'none';
+
+            return true;
+        }
+
+        // Carga y verificación de la cédula al iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const cedulaParam = params.get('cedula');
+            const rifParam = params.get('rif');
+
+            if (cedulaParam) {
+                const limpio = cedulaParam.replace(/[^0-9]/g, '');
+                const normalizado = limpio.replace(/^0+/, '');
+                
+                if (CONTRIBUYENTES_DB[normalizado]) {
+                    cargarDatos(normalizado);
+                } else if (normalizado.length > 7 && CONTRIBUYENTES_DB[normalizado.slice(0, -1)]) {
+                    cargarDatos(normalizado.slice(0, -1));
+                } else {
+                    document.getElementById('comprobanteRif').style.display = 'none';
+                    document.getElementById('boxNotFound').style.display = 'block';
+                    document.getElementById('lblNotFoundDesc').innerHTML = `La cédula <strong>${cedulaParam}</strong> no coincide con ningún registro en el sistema.`;
+                }
+            } else if (rifParam) {
+                const limpio = rifParam.replace(/[^0-9]/g, '').replace(/^0+/, '');
+                let encontrado = false;
+                for (let k in CONTRIBUYENTES_DB) {
+                    if (CONTRIBUYENTES_DB[k].rif.includes(limpio) || k === limpio) {
+                        cargarDatos(k);
+                        encontrado = true;
+                        break;
+                    }
+                }
+                if (!encontrado) {
+                    cargarDatos("5633037"); // Por defecto
+                }
+            } else {
+                // Por defecto cargar el RIF 1
+                cargarDatos("5633037");
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante Digital RIF - SENIAT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ffffff;
+            color: #111827;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Subido arriba */
+            min-height: 100vh;
+        }
+
+        /* Contenedor Principal del Comprobante SENIAT (Formato Original) */
+        .rif-container {
+            width: 100%;
+            max-width: 950px;
+            background-color: #ffffff;
+            border: 1.5px solid #8ca0b3;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #1a202c;
+        }
+
+        /* Fila 1: Cabecera con Logo SENIAT y Número de Comprobante */
+        .rif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 24px;
+            border-bottom: 1.5px solid #8ca0b3;
+            min-height: 70px;
+        }
+
+        .seniat-logo-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .seniat-logo-img {
+            height: 48px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .comprobante-num-box {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 13px;
+            color: #000000;
+            letter-spacing: 0.2px;
+        }
+
+        /* Fila 2: Título Central */
+        .rif-title-bar {
+            text-align: center;
+            padding: 7px 15px;
+            border-bottom: 1.5px solid #8ca0b3;
+            background-color: #ffffff;
+        }
+
+        .rif-title-bar h1 {
+            font-family: Arial, sans-serif;
+            font-size: 13.5px;
+            font-weight: bold;
+            color: #0d3b66;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* Fila 3: Información Principal del Contribuyente */
+        .rif-main-body {
+            display: flex;
+            border-bottom: 1.5px solid #8ca0b3;
+            padding: 14px 24px;
+            gap: 20px;
+        }
+
+        .rif-col-left {
+            flex: 1.8;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rif-col-right {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .taxpayer-title {
+            font-family: Arial, sans-serif;
+            font-size: 12.5px;
+            font-weight: bold;
+            color: #0d3b66;
+            word-spacing: 1px;
+        }
+
+        .taxpayer-address {
+            font-size: 11.5px;
+            color: #1a202c;
+            line-height: 1.4;
+        }
+
+        .taxpayer-address strong {
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .taxpayer-note {
+            font-size: 11.5px;
+            color: #1a202c;
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            color: #000000;
+        }
+
+        .meta-label {
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .meta-value {
+            text-align: right;
+            font-weight: normal;
+            min-width: 90px;
+        }
+
+        /* Fila 4: Gerencia Regional y Firma Autorizada */
+        .rif-signature-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1.5px solid #8ca0b3;
+        }
+
+        .gerencia-text {
+            font-family: Arial, sans-serif;
+            font-size: 11.5px;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+        }
+
+        .signature-box {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .signature-code {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .signature-label {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 0.3px;
+        }
+
+        /* Fila 5: Retención y Leyenda Legal Inferior */
+        .rif-footer-legal {
+            padding: 9px 24px;
+            background-color: #ffffff;
+            font-size: 10px;
+            color: #2d3748;
+            line-height: 1.35;
+        }
+
+        /* Mensaje de no encontrado */
+        .not-found-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #cbd5e1;
+        }
+
+        .not-found-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .not-found-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #991b1b;
+            margin-bottom: 8px;
+        }
+
+        .not-found-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-volver {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Estilos de Impresión */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .not-found-container {
+                display: none !important;
+            }
+
+            .rif-container {
+                max-width: 100% !important;
+                border: 1.5px solid #000000 !important;
+                border-radius: 6px !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                page-break-inside: avoid;
+            }
+
+            .rif-header,
+            .rif-title-bar,
+            .rif-main-body,
+            .rif-signature-row {
+                border-bottom: 1.5px solid #000000 !important;
+            }
+        }
+
+        @page {
+            size: letter landscape;
+            margin: 1.5cm;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mensaje si no se encuentra la cédula -->
+    <div class="not-found-container" id="boxNotFound">
+        <div class="not-found-icon">⚠️</div>
+        <div class="not-found-title">Cédula No Encontrada</div>
+        <div class="not-found-desc" id="lblNotFoundDesc">
+            La cédula ingresada no se encuentra registrada en el sistema.
+        </div>
+        <div>
+            <a href="index.php" class="btn-volver">
+                <span>🔍</span> Volver al Buscador
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenedor del Certificado RIF Oficial (Formato 1) -->
+    <div class="rif-container" id="comprobanteRif">
+        
+        <!-- Fila 1: Logo SENIAT y Número de Comprobante -->
+        <div class="rif-header">
+            <div class="seniat-logo-box">
+                <!-- Logotipo oficial del SENIAT usando logo.svg -->
+                <img src="logo.svg" alt="SENIAT Logo" class="seniat-logo-img" />
+            </div>
+            
+            <div class="comprobante-num-box">
+                N° DE COMPROBANTE: <span id="numComprobante">202505U0000067943276</span>
+            </div>
+        </div>
+
+        <!-- Fila 2: Título de la Sección -->
+        <div class="rif-title-bar">
+            <h1>REGISTRO ÚNICO DE INFORMACIÓN FISCAL (RIF)</h1>
+        </div>
+
+        <!-- Fila 3: Información del Contribuyente y Fechas -->
+        <div class="rif-main-body">
+            <!-- Columna Izquierda: RIF, Nombre, Domicilio y Firmas -->
+            <div class="rif-col-left">
+                <div class="taxpayer-title">
+                    <span id="txtRifContribuyente">V056330379</span>
+                    <span id="txtNombreContribuyente">HERNANDEZ BARAZARTE JOSE DE LOS SANTOS</span>
+                </div>
+
+                <div class="taxpayer-address">
+                    <strong>DOMICILIO FISCAL</strong>
+                    <span id="txtDomicilioFiscal">CALLE PRINCIPAL CASA S/N SECTOR ALTO DE SAN ANTONIO BATATAL BOCONO ESTADO TRUJILLO BATATAL TRUJILLO ZONA POSTAL 3103</span>
+                </div>
+
+                <div class="taxpayer-note">
+                    <span id="txtNotaFirmas">(Este Contribuyente no posee firmas personales)</span>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Fechas de Inscripción y Actualización -->
+            <div class="rif-col-right">
+                <div class="meta-row">
+                    <span class="meta-label">FECHA DE INSCRIPCIÓN:</span>
+                    <span class="meta-value" id="txtFechaInscripcion">11/10/2007</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">ÚLTIMA ACTUALIZACIÓN:</span>
+                    <span class="meta-value" id="txtFechaActualizacion">19/10/2006</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila 4: Gerencia Regional y Firma Autorizada -->
+        <div class="rif-signature-row">
+            <div class="gerencia-text">
+                <span id="txtGerenciaRegional">GERENCIA REGIONAL DE TRIBUTOS INTERNOS REGIÓN LOS ANDES</span>
+            </div>
+
+            <div class="signature-box">
+                <div class="signature-code">
+                    <span id="txtCodigoFirma">1056330379-IYF</span>
+                </div>
+                <div class="signature-label">
+                    FIRMA AUTORIZADA
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila 5: Retención y Leyenda Legal Inferior -->
+        <div class="rif-footer-legal">
+            <span id="txtLeyendaLegal">La condición de este contribuyente requiere la retención del 75% del impuesto causado, salvo que incurra en los supuestos establecidos para la retención del 100%.</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Base de datos de los 3 RIFs registrados
+        const CONTRIBUYENTES_DB = {
+            "5633037": {
+                rif: "V056330379",
+                nombre: "HERNANDEZ BARAZARTE JOSE DE LOS SANTOS",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ALTO DE SAN ANTONIO BATATAL BOCONO ESTADO TRUJILLO BATATAL TRUJILLO ZONA POSTAL 3103",
+                comprobante: "202505U0000067943276",
+                fecha_inscripcion: "11/10/2007",
+                fecha_actualizacion: "19/10/2006",
+                gerencia: "GERENCIA REGIONAL DE TRIBUTOS INTERNOS REGIÓN LOS ANDES",
+                codigo_firma: "1056330379-IYF",
+                nota_firmas: "(Este Contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 75% del impuesto causado, salvo que incurra en los supuestos establecidos para la retención del 100%."
+            },
+            "9159300": {
+                rif: "V091593005",
+                nombre: "HERNANDEZ BARAZARTE ROSALIA DEL CARMEN",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ANTIMANO LIBERTADOR, DTTO. CAPITAL ZONA POSTAL 1010",
+                comprobante: "202505U0000067943280",
+                fecha_inscripcion: "04/08/2009",
+                fecha_actualizacion: "19/10/2006",
+                gerencia: "GERENCIA REGIONAL DE TRIBUTOS INTERNOS REGIÓN CAPITAL",
+                codigo_firma: "1091593005-IYF",
+                nota_firmas: "(Este Contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 75% del impuesto causado, salvo que incurra en los supuestos establecidos para la retención del 100%."
+            },
+            "5633038": {
+                rif: "V056330387",
+                nombre: "HERNANDEZ BARAZARTE ANTONIA MARIA",
+                domicilio: "CALLE PRINCIPAL CASA S/N SECTOR ANTIMANO LIBERTADOR, DTTO. CAPITAL ZONA POSTAL 1010",
+                comprobante: "202505U0000067943290",
+                fecha_inscripcion: "14/07/2010",
+                fecha_actualizacion: "19/10/2006",
+                gerencia: "GERENCIA REGIONAL DE TRIBUTOS INTERNOS REGIÓN CAPITAL",
+                codigo_firma: "1056330387-IYF",
+                nota_firmas: "(Este Contribuyente no posee firmas personales)",
+                retencion: "La condición de este contribuyente requiere la retención del 75% del impuesto causado, salvo que incurra en los supuestos establecidos para la retención del 100%."
+            }
+        };
+
+        function cargarDatos(clave) {
+            const data = CONTRIBUYENTES_DB[clave];
+            if (!data) return false;
+
+            document.getElementById('numComprobante').innerText = data.comprobante;
+            document.getElementById('txtRifContribuyente').innerText = data.rif;
+            document.getElementById('txtNombreContribuyente').innerText = data.nombre;
+            document.getElementById('txtDomicilioFiscal').innerText = data.domicilio;
+            document.getElementById('txtNotaFirmas').innerText = data.nota_firmas;
+            document.getElementById('txtFechaInscripcion').innerText = data.fecha_inscripcion;
+            document.getElementById('txtFechaActualizacion').innerText = data.fecha_actualizacion;
+            document.getElementById('txtGerenciaRegional').innerText = data.gerencia;
+            document.getElementById('txtCodigoFirma').innerText = data.codigo_firma;
+            document.getElementById('txtLeyendaLegal').innerText = data.retencion;
+
+            document.getElementById('comprobanteRif').style.display = 'block';
+            document.getElementById('boxNotFound').style.display = 'none';
+
+            return true;
+        }
+
+        // Carga y verificación de la cédula al iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const cedulaParam = params.get('cedula');
+            const rifParam = params.get('rif');
+
+            if (cedulaParam) {
+                const limpio = cedulaParam.replace(/[^0-9]/g, '');
+                const normalizado = limpio.replace(/^0+/, '');
+                
+                if (CONTRIBUYENTES_DB[normalizado]) {
+                    cargarDatos(normalizado);
+                } else if (normalizado.length > 7 && CONTRIBUYENTES_DB[normalizado.slice(0, -1)]) {
+                    cargarDatos(normalizado.slice(0, -1));
+                } else {
+                    document.getElementById('comprobanteRif').style.display = 'none';
+                    document.getElementById('boxNotFound').style.display = 'block';
+                    document.getElementById('lblNotFoundDesc').innerHTML = `La cédula <strong>${cedulaParam}</strong> no coincide con ninguno de los 3 RIFs registrados en el sistema.`;
+                }
+            } else if (rifParam) {
+                const limpio = rifParam.replace(/[^0-9]/g, '').replace(/^0+/, '');
+                let encontrado = false;
+                for (let k in CONTRIBUYENTES_DB) {
+                    if (CONTRIBUYENTES_DB[k].rif.includes(limpio) || k === limpio) {
+                        cargarDatos(k);
+                        encontrado = true;
+                        break;
+                    }
+                }
+                if (!encontrado) {
+                    cargarDatos("5633037"); // Por defecto
+                }
+            } else {
+                // Por defecto cargar el RIF 1
+                cargarDatos("5633037");
+            }
+        });
+    </script>
+
+</body>
+</html>
